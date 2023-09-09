@@ -1,0 +1,182 @@
+<!-- <!DOCTYPE html> -->
+<html>
+<head>
+    <style>
+        @font-face {
+            font-family: "Segoe UI Universal";
+            src: url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/semibold/latest.woff2) format("woff2");
+        }
+        
+        body {
+            background-color: black;
+            overflow-y: hidden;
+            color: white;
+            font-family:monospace;
+            user-select: none;
+            height: 100%;;
+        }
+        canvas{
+            background-color: rgba(37,39,42);
+            /* background-color: rgba(33,33,33); */
+
+            /* background-color: white; */
+            float: left;
+            height: 99.7%;
+            width: calc(100% - 303px);
+            /* width: 100%; */
+            border-radius: 0px 0px 0px 25px;
+            /* width:100%; */
+            /* height:100%; */
+        }
+        select{
+            float: right;
+            font-family:monospace;
+        }
+        #settingsBlock{
+            background-color: rgba(23,27,30);
+            float: right; 
+            width: 290px;
+            height: 100px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            height: 99.7%;
+            border-radius: 0px 0px 25px 0px;
+            /* visibility: hidden; */
+        }
+        .menu{
+            background-color: rgb(15,19,22);
+            float: right; 
+            width: 290px; 
+            display: none;
+        }
+        .settingsHeader{
+            background-color: black;
+            border:1px solid #44484c;
+            font-size: auto;
+            float: left; 
+            width: 290px;
+            height: 20px;
+            text-align:left;
+        }
+        .settingsLabel{
+            float: left; 
+            width: 150px;
+            height: 23px;
+        }
+        .border{
+            border:3px solid #44484c;
+        }
+        input[type=range]{
+            float: left;
+            width: 200px;
+            height: 15px;
+        }
+        #newBatch{
+            background-color: black;
+            float: right; 
+            width: 290px;
+            height: 150px;
+            text-align: left;
+            font-size: 56px;
+        }
+        #batchSettingsHeader{
+            display: none;
+        }
+        .settingsTextBox{
+            float: right;
+            width: 120px;
+            text-align: center;
+        }
+        .settingsButton{
+            width:300px;
+            background-color:  rgb(0,20,55);
+            color: white;
+            font-family:monospace;
+        }
+        #trailButton{
+            float: right;
+            width:auto;
+            color: black;
+            background-color:  white;
+            font-family:monospace;
+        }
+        #settingsBlock::-webkit-scrollbar { 
+            display: none;  /* Safari and Chrome */
+        }
+    </style>
+</head>
+<body>
+<canvas id="display" class="border"></canvas>
+<div id="settingsBlock" class = "border">
+    <div id="batchSettingsHeader" class="settingsHeader">New Batch</div>
+    <div id="batchSettings" class="menu border">
+        <span class="settingsLabel">> Red</span>
+        <input type="range" min="0" max="255" value="255" class="slider" id="red">
+        <span class="settingsLabel">> Green</span>
+        <input type="range" min="0" max="255" value="255" class="slider" id="green">
+        <span class="settingsLabel">> Blue</span>
+        <input type="range" min="0" max="255" value="255" class="slider" id="blue">
+    </div>
+    <div id="flakeSettingsHeader" class="settingsHeader">|  Flake Settings</div>
+    <div id="flakeSettings" class="menu border">
+        <span class="settingsLabel">> Branches</span>
+        <input id="branches" type="text" class="settingsTextBox"value="1"></input>
+        <span class="settingsLabel">> Rotation</span>
+        <input type="range" min="0" max="360" value="0" class="slider" id="rot">
+        <span class="settingsLabel">> Branch Angle</span>
+        <input type="range" min="0" max="360" value="0" class="slider" id="bAngle">
+        <span class="settingsLabel">> Branch Type</span>
+        <select id="type">
+            <optgroup label="Branch Type">
+                <option value="branch">Branch</option>
+                <option value="squiggle">Squiggle</option>
+              </optgroup>
+        </select>
+        <input id = "flakeSettingsReset" type="button" class="settingsButton " value="Reset"></input>
+        <input id = "flakeReplace" type="button" class="settingsButton " value="Replace"></input>
+    </div>
+    <div id="animationSettingsHeader"class="settingsHeader">|  Animation Settings</div>
+    <div id="animationSettings" class="menu border">
+        <span class="settingsLabel">> Rotation</span>
+        <input id="rotIterate" type="text" class="settingsTextBox" value="1"></input>
+        <span class="settingsLabel">> Angle</span>
+        <input id="angleIterate" type="text" class="settingsTextBox"value="1"></input>
+        <span class="settingsLabel">> Branch</span>
+        <input id="branchIterate" type="text" class="settingsTextBox"value=""></input>
+        <span class="settingsLabel">> Thickness</span>
+        <input id="lineWidthIterate" type="text" class="settingsTextBox"value=""></input>
+        <span class="settingsLabel">> Red</span>
+        <input id="redIterate" type="text" class="settingsTextBox"value=""></input>
+        <span class="settingsLabel">> Green</span>
+        <input id="greenIterate" type="text" class="settingsTextBox"value=""></input>
+        <span class="settingsLabel">> Blue</span>
+        <input id="blueIterate" type="text" class="settingsTextBox"value=""></input>
+        <input id = "trailButton" type="button" class="settingsButton" value="Trail: Off"></input>
+    </div>
+    <div id="layerSelectHeader"class="settingsHeader">|  Layer Select</div>
+    <div id="layerSelect" class="menu border">
+    </div>
+    <div id="layerSettingsHeader"class="settingsHeader">|   Layer Settings</div>
+    <div id="layerSettings" class = "menu border">
+        <span class="settingsLabel">> Red</span>
+        <input type="range" min="0" max="255" value="255" class="slider" id="layerRed"></input>
+        <span class="settingsLabel">> Green</span>
+        <input type="range" min="0" max="255" value="255" class="slider" id="layerGreen"></input>
+        <span class="settingsLabel">> Blue</span>
+        <input type="range" min="0" max="255" value="255" class="slider" id="layerBlue"></input>
+        <span class="settingsLabel">> Angle</span>
+        <input type="range" min="0" max="360" value="360" class="slider" id="angle"></input>
+        <span class="settingsLabel">> Length</span>
+        <input type="range" min="20" max="55" value="55" class="slider" id="length"></input>
+        <span class="settingsLabel">> Branch Length</span>
+        <input type="range" min="20" max="60" value="60" class="slider" id="bLength"></input>
+    </div>
+</div>
+<script src="Math.js"></script>
+<script src="Setup.js"></script>
+<script src="Global.js"></script>
+<script src="Drawing.js"></script>
+<script src="UI.js"></script>
+<script src="Execute.js"></script>
+</body>
+</html>
